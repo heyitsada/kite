@@ -1,4 +1,5 @@
 #include "../fmt.h"
+#include "../kite.h"
 #include "../sout.h"
 
 #include <stdbool.h>
@@ -86,8 +87,8 @@ int main(int argc, char *argv[]) {
       .sample_rate = (uint32_t)sample_rate,
       .channels = (uint32_t)channels,
       .bits = (uint32_t)bits,
-      .metadata_offset = sizeof(header_t),
-      .data_offset = sizeof(header_t) + sizeof(metadata_t),
+      .metadata_offset = KITE_HEADER_SIZE,
+      .data_offset = KITE_HEADER_SIZE + KITE_META_SIZE,
   };
   memcpy(header.magic, MAGIC, 4);
 
@@ -110,8 +111,7 @@ int main(int argc, char *argv[]) {
     out = stdout;
   }
 
-  if (fwrite(&header, sizeof(header), 1, out) != 1 ||
-      fwrite(&meta, sizeof(meta), 1, out) != 1) {
+  if (!kite_write_header(out, &header) || !kite_write_meta(out, &meta)) {
     soutf("error: could not write header\n");
     return 1;
   }

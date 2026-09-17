@@ -1,4 +1,5 @@
 #include "../fmt.h"
+#include "../kite.h"
 #include "../sout.h"
 
 #include <stdint.h>
@@ -21,7 +22,7 @@ int main(int argc, char *argv[]) {
   }
 
   /* header should have the magic */
-  if (fread(&header, sizeof(header), 1, f) != 1) {
+  if (!kite_read_header(f, &header)) {
     soutf("error: %s cannot be read\n", argv[1]);
     fclose(f);
     return 1;

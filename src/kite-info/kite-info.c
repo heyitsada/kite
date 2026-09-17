@@ -1,4 +1,5 @@
 #include "../fmt.h"
+#include "../kite.h"
 #include "../sout.h"
 
 #include <stdint.h>
@@ -22,7 +23,7 @@ int main(int argc, char *argv[]) {
   }
 
   /* header must have the magic */
-  if (fread(&header, sizeof(header), 1, f) != 1) {
+  if (!kite_read_header(f, &header)) {
     soutf("error: %s cannot be read\n", argv[1]);
     fclose(f);
     return 1;
@@ -34,8 +35,9 @@ int main(int argc, char *argv[]) {
     return 1;
   }
 
-  /* metadata comes right after the header */
-  if (fread(&meta, sizeof(meta), 1, f) != 1) {
+  /* metadata lives at metadata_offset */
+  if (fseek(f, (long)header.metadata_offset, SEEK_SET) != 0 ||
+      !kite_read_meta(f, &meta)) {
     soutf("error: %s cannot be read\n", argv[1]);
     fclose(f);
     return 1;

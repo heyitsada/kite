@@ -1,4 +1,5 @@
 #include "../fmt.h"
+#include "../kite.h"
 #include "../sout.h"
 
 #include <stdbool.h>
@@ -133,10 +134,10 @@ int main(int argc, char *argv[]) {
       return 1;
     }
 
-    fwrite(&tmp, sizeof(tmp), 1, f);
+    kite_write_meta(f, &tmp);
     fclose(f);
   } else {
-    fwrite(&tmp, sizeof(tmp), 1, stdout);
+    kite_write_meta(stdout, &tmp);
   }
 
   return 0;
