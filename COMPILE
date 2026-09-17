@@ -1,0 +1,7 @@
+#!/bin/sh
+CC=${CC:-cc}
+
+$CC src/kite-meta/kite-meta.c src/sout.c -Isrc/ -o kite-meta
+$CC src/rawtokite/rawtokite.c src/sout.c -Isrc/ -o rawtokite
+$CC src/kite-info/kite-info.c src/sout.c -Isrc/ -o kite-info
+$CC src/kitetoraw/kitetoraw.c src/sout.c -Isrc/ -o kitetoraw

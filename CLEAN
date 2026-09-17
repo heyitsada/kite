@@ -1,0 +1,2 @@
+#!/bin/sh
+rm kite-info kite-meta rawtokite kitetoraw
